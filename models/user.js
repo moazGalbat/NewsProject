@@ -16,7 +16,15 @@ const userSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     sources: [String]
+},{
+    toJSON: {virtuals:true} 
 })
+
+userSchema.virtual('testSources', {
+    ref: 'Source',
+    localField: 'sources',
+    foreignField: 'id',
+  });
 
 userSchema.pre('save', async function () {
     const user = this;

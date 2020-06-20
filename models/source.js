@@ -2,8 +2,13 @@ const mongoose = require('mongoose')
 
 
 const sourceSchema = new mongoose.Schema({
-        id: { type: String, required: true , unique:true},
-        name: { type: String, required: true },
+        id: { type: String},
+        name: { type: String},
+        description:{ type: String},
+        url:{ type: String},
+        category:{ type: String},
+        language:{ type: String},
+        country:{ type: String},
 })
 
 
