@@ -8,8 +8,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Link from '@material-ui/core/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink , useHistory } from 'react-router-dom';
 import { UserContext } from '../context/userContext';
+import {removeAuthTokens} from '../helpers/authHelpers'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,11 +32,13 @@ export default function MenuAppBar() {
     const { currentUser, setCurrentUser } = useContext(UserContext)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const history = useHistory();
 
 
     const logOut = () => {
-        localStorage.removeItem("tokens")
-        setCurrentUser(null)
+        removeAuthTokens();
+        setCurrentUser(null);
+        history.push('/login')
     }
 
     const handleMenu = (event) => {

@@ -36,7 +36,7 @@ export default function Sources() {
 
 
   const postUserSelectedSources = (sources) => {
-    axiosInstance.post("/sources/subscribe", {
+    axiosInstance.post(`/users/${currentUser.id}/sources`, {
       sources: sources,
     }).then(result => {
       setSuccess(true)

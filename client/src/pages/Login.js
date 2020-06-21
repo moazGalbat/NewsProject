@@ -12,8 +12,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import loginSchema from '../schemas/loginSchema'
 import Alert from '@material-ui/lab/Alert';
+
+
+import loginSchema from '../schemas/loginSchema'
+import {getAuthTokens ,setAuthTokens} from '../helpers/authHelpers'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,10 +50,9 @@ export default function Login(props) {
     const {setCurrentUser}= useContext(UserContext)
     const classes = useStyles();
 
-
-    const existingTokens = JSON.parse(localStorage.getItem("tokens"));
     
     useEffect(() => {
+        const existingTokens = getAuthTokens();
         if (existingTokens) {
             setLoggedIn(true);
         }
@@ -61,7 +63,7 @@ export default function Login(props) {
     function postLogin() {
         axios.post("/login", user )
         .then(result => {
-            localStorage.setItem("tokens", JSON.stringify(result.data.token))
+            setAuthTokens(result.data.token)
             setCurrentUser(result.data.user)
             setLoggedIn(true);
         }).catch(e => {

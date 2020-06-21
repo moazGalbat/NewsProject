@@ -1,17 +1,17 @@
 import React, { useState, useMemo } from 'react';
-import { BrowserRouter as Router, Link, Route , Switch} from "react-router-dom";
+import { BrowserRouter as Router, Route , Switch} from "react-router-dom";
 import Home from './pages/Home';
 import Sources from './pages/Sources';
-import PrivateRoute from './PrivateRoute';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { UserContext } from './context/userContext';
-import { getUserFromToken, verifyTokenExpiration } from './helpers/authHelpers';
+import { getUserFromToken, getAuthTokens } from './helpers/authHelpers';
 import Navbar from './components/Navbar'
+import PrivateRoute from './routes/PrivateRoute';
 
 function App() {
   let user = null;
-  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+  const existingTokens = getAuthTokens();
   if (existingTokens) {
     user = getUserFromToken(existingTokens)
   }

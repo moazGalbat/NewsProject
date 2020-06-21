@@ -6,13 +6,9 @@ const customError = require('../helpers/customError')
 const authMiddleware = require('../middlewares/authMiddleware')
 const validationMiddleware = require('../middlewares/validation')
 
-router.get("/users", authMiddleware, (req, res) => {
-    res.json("all users")
-})
-
 router.post("/login", validationMiddleware(
     [
-        check('email').notEmpty().withMessage("email is required").normalizeEmail().isEmail().withMessage("Invalid Mail Format"),
+        check('email').trim().normalizeEmail().notEmpty().withMessage("email is required").isEmail().withMessage("Invalid Mail Format"),
         check('password').trim().notEmpty().withMessage("password is required"),
     ])
     ,
@@ -33,10 +29,10 @@ router.post("/login", validationMiddleware(
 
 router.post("/signup", validationMiddleware(
     [
-        check('email').notEmpty().withMessage("email is required").normalizeEmail().isEmail().withMessage("Invalid Mail Format"),
-        check('password').isLength({ min: 8 }).withMessage("Password is at least 8 characters").trim().notEmpty().withMessage("password is required"),
-        check('firstName').isAlpha().withMessage("Use Alphabets only.").isLength({ min: 3 }).withMessage("First name is at least 3 characters").trim().notEmpty().withMessage("First name is required"),
-        check('lastName').isAlpha().withMessage("Use Alphabets only.").isLength({ min: 3 }).withMessage("Last name is at least 3 characters").trim().notEmpty().withMessage("Last name is required"),
+        check('email').trim().normalizeEmail().notEmpty().withMessage("email is required").isEmail().withMessage("Invalid Mail Format"),
+        check('password').trim().isLength({ min: 8 }).withMessage("Password is at least 8 characters").notEmpty().withMessage("password is required").trim(),
+        check('firstName').trim().isAlpha().withMessage("Use Letters only.").isLength({ min: 3 }).withMessage("First name is at least 3 characters").notEmpty().withMessage("First name is required"),
+        check('lastName').trim().isAlpha().withMessage("Use Letters only.").isLength({ min: 3 }).withMessage("Last name is at least 3 characters").notEmpty().withMessage("Last name is required"),
         check('passwordConfirmation', 'passwordConfirmation field must have the same value as the password field')
             .exists()
             .custom((value, { req }) => value === req.body.password),

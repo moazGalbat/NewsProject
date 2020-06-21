@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const axios = require("axios")
-const authMiddleware = require('../middlewares/authMiddleware')
-const SourceModel = require('../models/source')
+// const SourceModel = require('../models/source')
 
 router.get("/all", (req,res,next)=>{
     res.status(200).json("alll")
@@ -25,17 +24,7 @@ router.get("", async (req, res, next) => {
     }
 })
 
-router.post("/subscribe", authMiddleware ,async (req, res, next) => {
-    try {
-        const { sources } = req.body;
-        const user = req.user;
-        user.sources = sources;
-        await user.save()
-        res.status(200).json(user.sources)
-    } catch (error) {
-        next(error)   
-    }
-})
+
 
 
 module.exports = router;

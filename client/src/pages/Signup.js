@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Link as RouterLink, Redirect } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from "react";
+import { Link as RouterLink, Redirect, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { UserContext } from "../context/userContext";
 import Avatar from '@material-ui/core/Avatar';
@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import signupSchema from '../schemas/signupSchema'
-
+import {getAuthTokens ,setAuthTokens, getUserFromToken} from '../helpers/authHelpers'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.secondary.main,
     },
     form: {
-      width: '100%', // Fix IE 11 issue.
+      width: '100%', 
       marginTop: theme.spacing(3),
     },
     submit: {
@@ -48,13 +48,20 @@ export default function Signup() {
     const [errors, setErrors]= useState({})
     const {setCurrentUser}= useContext(UserContext)
     const classes = useStyles();
+    const history = useHistory();
 
+    useEffect(() => {
+        const existingTokens = getAuthTokens();
+        if (existingTokens) {
+            setLoggedIn(true);
+        }
+    }, [isLoggedIn])
 
     function signup() {
         axios.post("/signup", user ).then(result => {
-            localStorage.setItem("tokens", JSON.stringify(result.data.token))
-            setCurrentUser(result.data.user)
-            setLoggedIn(true);
+            setAuthTokens(result.data.token);
+            setCurrentUser(getUserFromToken(result.data.token));
+            history.push('/sources');
         }).catch(e => {
             if (e.response.status === 422){
                 setErrors( e.response.data.details.errors.reduce((agg, err) => ({ ...agg, [err.param]: err.msg }), {}));

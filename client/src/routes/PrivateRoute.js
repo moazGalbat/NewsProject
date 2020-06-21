@@ -1,22 +1,23 @@
 import React, { useContext, useEffect } from 'react';
 import { Route, Redirect, useHistory } from 'react-router-dom';
-import { UserContext } from './context/userContext';
+import { UserContext } from '../context/userContext';
 import axios from 'axios';
+import {getAuthTokens, removeAuthTokens} from '../helpers/authHelpers';
 
 function PrivateRoute({ component: Component, ...rest }) {
-  const { currentUser, setCurrentUser } = useContext(UserContext)
+  const {setCurrentUser } = useContext(UserContext)
   const history = useHistory()
 
-  const headers = {
-    'Authorization': `${JSON.parse(localStorage.getItem("tokens"))}`
-  }
+  
 
   useEffect(() => {
-    console.log(headers)
+    const headers = {
+      'Authorization': `${getAuthTokens()}`
+    }
     axios.get("/checkAuth", { headers })
       .catch(e => {
         setCurrentUser(null);
-        localStorage.removeItem("tokens");
+        removeAuthTokens();
         history.push("/login")
       })
   })
@@ -24,7 +25,7 @@ function PrivateRoute({ component: Component, ...rest }) {
 
   return (
     <Route {...rest} render={(props) =>
-      currentUser?.email ?
+      getAuthTokens()?
         (
           <Component {...props} />
         ) : (

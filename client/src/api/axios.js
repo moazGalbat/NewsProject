@@ -20,6 +20,9 @@ instance.interceptors.response.use((response) => {
     if (error.response.status === 401 ){
         window.location.href="/login"
     }
+    else {
+      return Promise.reject(error)
+    }
   })
 
 export default instance;

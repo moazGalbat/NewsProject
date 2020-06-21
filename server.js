@@ -8,6 +8,7 @@ const authRouter = require('./routes/auth')
 const sourcesRouter = require ('./routes/sources')
 const newsRouter = require ('./routes/news')
 const userRouter = require ('./routes/users')
+const authMiddleware = require('./middlewares/authMiddleware')
 
 const port = process.env.PORT || 5000;
 const uri = process.env.DB_URI
@@ -30,9 +31,9 @@ app.use(express.json())
 
 
 app.use('', authRouter)
-app.use('/sources', sourcesRouter)
-app.use('/news', newsRouter)
-app.use('/users', userRouter)
+app.use('/sources',authMiddleware, sourcesRouter)
+app.use('/news',authMiddleware, newsRouter)
+app.use('/users',authMiddleware, userRouter)
 
 app.use((err,req,res,next)=>{
     const statusCode = err.statusCode || 500;
