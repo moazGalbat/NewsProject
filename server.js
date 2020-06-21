@@ -30,7 +30,7 @@ app.use(cors());
 app.use(express.json())
 
 
-app.use('', authRouter)
+app.use('/', authRouter)
 app.use('/sources',authMiddleware, sourcesRouter)
 app.use('/news',authMiddleware, newsRouter)
 app.use('/users',authMiddleware, userRouter)
