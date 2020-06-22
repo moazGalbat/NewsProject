@@ -31,12 +31,14 @@ export default function Sources() {
     ]).then(axios.spread((fUserSources, fSources) => {
       setUserSources(fUserSources.data);
       setSources(fSources.data.map(row => fUserSources.data.find(source => source === row.id) ? { ...row, tableData: { checked: true } } : row));
-    }));
+    })).catch(e => {
+      setError(true); 
+    });
   }, [])
 
 
   const postUserSelectedSources = (sources) => {
-    axiosInstance.post(`/users/${currentUser.id}/sources`, {
+    axiosInstance.patch(`/users/${currentUser.id}/sources`, {
       sources: sources,
     }).then(result => {
       setSuccess(true)

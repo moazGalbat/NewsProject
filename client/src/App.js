@@ -22,8 +22,7 @@ function App() {
   return (
     <UserContext.Provider value={providerValue}>
     <Router>
-      {/* {existingTokens?<Navbar/>:null} */}
-      <Navbar/>
+      {existingTokens?<Navbar/>:null}
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />

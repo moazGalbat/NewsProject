@@ -72,7 +72,7 @@ export default function MenuAppBar() {
                         >
                             <AccountCircle />
                             <Typography variant="button" display="block">
-                                {currentUser?.email}
+                                {currentUser?.fullName}
                              </Typography>
                         </IconButton>
                         <Menu

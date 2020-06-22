@@ -3,7 +3,7 @@ const UserModel = require('../models/user')
 const {subscribe,getUserSources} = require ('../controllers/userControllers')
 
 
-router.post("/:id/sources" ,subscribe)
+router.patch("/:id/sources" ,subscribe)
 
 router.get("/:id/sources" ,getUserSources)
 

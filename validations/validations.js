@@ -1,5 +1,5 @@
 const { check } = require('express-validator');
-
+const UserModel = require ('../models/user')
 
 const loginValidations = [
     check('email').trim().normalizeEmail().notEmpty().withMessage("email is required").isEmail().withMessage("Invalid Mail Format"),

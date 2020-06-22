@@ -16,15 +16,13 @@ const userSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     sources: [String]
-},{
-    toJSON: {virtuals:true} 
+}, {
+    toJSON: { virtuals: true }
 })
 
-userSchema.virtual('testSources', {
-    ref: 'Source',
-    localField: 'sources',
-    foreignField: 'id',
-  });
+userSchema.virtual('fullName').get(function () {
+    return this.firstName + ' ' + this.lastName;
+});
 
 userSchema.pre('save', async function () {
     const user = this;
@@ -40,7 +38,7 @@ userSchema.methods.comparePassword = function (plainPassword) {
 
 userSchema.methods.generateToken = function (expiresIn) {
     const user = this;
-    return sign({ id: user._id, email: user.email }, jwtSecretKey, { expiresIn });
+    return sign({ id: user._id, email: user.email , fullName: `${user.firstName} ${user.lastName}`}, jwtSecretKey, { expiresIn });
 }
 
 userSchema.statics.getVerifiedUser = async function (token) {

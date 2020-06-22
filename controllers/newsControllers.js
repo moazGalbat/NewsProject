@@ -1,5 +1,6 @@
 const axios = require("axios")
 const customError = require('../helpers/customError')
+const apiKey = process.env.NEWS_API_KEY
 
 
 const getNews = async (req, res, next) => {
@@ -9,7 +10,7 @@ const getNews = async (req, res, next) => {
     const sources = user.sources.join(",");
     try {
         if (user.sources.length === 0)  throw customError(422, "One source at least is required")
-        const response = await axios.get(`https://newsapi.org/v2/everything?sources=${sources}&pageSize=${pageSize}&page=${page}&apiKey=3faed58441804588bfa8dc636f4b629b`)
+        const response = await axios.get(`https://newsapi.org/v2/everything?sources=${sources}&pageSize=${pageSize}&page=${page}&apiKey=${apiKey}`)
         res.status(200).json(response.data)
     } catch (error) {
         next(error)   

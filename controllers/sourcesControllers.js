@@ -1,8 +1,11 @@
 const axios = require("axios")
 
+
+const apiKey = process.env.NEWS_API_KEY
+
 const getAllSources = async (req, res, next) => {
     try {
-        const response = await axios.get("https://newsapi.org/v2/sources?apiKey=3faed58441804588bfa8dc636f4b629b");
+        const response = await axios.get(`https://newsapi.org/v2/sources?apiKey=${apiKey}`);
         
         // SourceModel.collection.insertMany(response.data.sources, onInsert);
         // function onInsert(err, docs) {

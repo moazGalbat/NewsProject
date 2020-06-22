@@ -16,7 +16,7 @@ import Alert from '@material-ui/lab/Alert';
 
 
 import loginSchema from '../schemas/loginSchema'
-import {getAuthTokens ,setAuthTokens} from '../helpers/authHelpers'
+import {getAuthTokens ,setAuthTokens, getUserFromToken} from '../helpers/authHelpers'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +64,7 @@ export default function Login(props) {
         axios.post("/login", user )
         .then(result => {
             setAuthTokens(result.data.token)
-            setCurrentUser(result.data.user)
+            setCurrentUser(getUserFromToken(result.data.token))
             setLoggedIn(true);
         }).catch(e => {
             if (e.response.status === 401 ){

@@ -1,14 +1,13 @@
-
+const UserModel = require('../models/user')
 
 const subscribe = async (req, res, next) => {
     try {
         const { sources } = req.body;
-        const user = req.user;
-        user.sources = sources;
-        await user.save()
+        const userID = req.user._id;
+        const user = await UserModel.findByIdAndUpdate(userID, { $set: { "sources": sources } }, { new: true }).exec()
         res.status(200).json(user.sources)
     } catch (error) {
-        next(error)   
+        next(error)
     }
 }
 
@@ -18,12 +17,12 @@ const getUserSources = async (req, res, next) => {
         const user = req.user;
         res.status(200).json(user.sources)
     } catch (error) {
-        next(error)   
+        next(error)
     }
 }
 
 
-module.exports ={
+module.exports = {
     subscribe,
     getUserSources
 }

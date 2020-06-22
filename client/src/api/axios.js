@@ -1,11 +1,6 @@
 import axios from 'axios'
+import { removeAuthTokens} from '../helpers/authHelpers';
 
-
-// const headers = {
-//     'Authorization': `${JSON.parse(localStorage.getItem("tokens"))}`
-// }
-
-// console.log(headers);
 
 const instance = axios.create();
 
@@ -18,6 +13,7 @@ instance.interceptors.response.use((response) => {
     return response;
   }, error => {
     if (error.response.status === 401 ){
+        removeAuthTokens();
         window.location.href="/login"
     }
     else {

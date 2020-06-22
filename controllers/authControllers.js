@@ -10,7 +10,7 @@ const login = async (req, res, next) => {
         const match = await user.comparePassword(password);
         if (!match) throw customError(401, "Incorrect Username or Password")
         const token = await user.generateToken("30m");
-        res.status(200).json({ user, token })
+        res.status(200).json({ token })
     } catch (err) {
         next(err)
     }
@@ -28,7 +28,7 @@ const signup =  async (req, res, next) => {
         })
         await user.save()
         const token = await user.generateToken("30m");
-        res.status(200).json({ user, token })
+        res.status(200).json({ token })
     } catch (err) {
         err.statusCode = 400;
         next(err);

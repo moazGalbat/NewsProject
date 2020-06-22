@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
+const helmet = require("helmet");
+
 require('dotenv').config()
 
 const authRouter = require('./routes/auth')
@@ -26,7 +28,14 @@ mongoose.connect(uri, {
     };
 })
 
-app.use(cors());
+
+const corsOptions = {
+    origin: "http://localhost:3000",
+}
+    
+
+app.use(helmet());
+app.use(cors(corsOptions));
 app.use(express.json())
 
 
