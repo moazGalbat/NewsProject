@@ -12,6 +12,8 @@ const sourcesRouter = require ('./routes/sources')
 const newsRouter = require ('./routes/news')
 const userRouter = require ('./routes/users')
 const authMiddleware = require('./middlewares/authMiddleware')
+const logger = require('./middlewares/logger')
+const errorMiddleware = require('./middlewares/error')
 
 const port = process.env.PORT || 5000;
 const uri = process.env.DB_URI
@@ -38,6 +40,7 @@ const corsOptions = {
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json())
+app.use(logger)
 
 
 app.use('/', authRouter)
@@ -45,21 +48,7 @@ app.use('/sources',authMiddleware, sourcesRouter)
 app.use('/news',authMiddleware, newsRouter)
 app.use('/users',authMiddleware, userRouter)
 
-app.use((err,req,res,next)=>{
-    const statusCode = err.statusCode || 500;
-    if (statusCode>= 500){
-        res.status(statusCode).json({
-            message: 'INTERNAL SERVER ERROR',
-            type: "INTERNAL SERVER ERROR"
-        })
-    }else{
-        res.status(statusCode).json ({
-            message: err.message,
-            type: err.type,
-            details: err.details,
-        })
-    }
-})
+app.use(errorMiddleware)
 
 // for production only.
 if(process.env.NODE_ENV === "production"){
