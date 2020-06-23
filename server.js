@@ -3,7 +3,7 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const helmet = require("helmet");
-
+const path = require("path")
 
 require('dotenv').config()
 
@@ -35,7 +35,7 @@ const corsOptions = {
     origin: process.env.CLIENT_URI,
 }
     
-
+app.use(express.static(path.join(__dirname, "client", "build")))
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json())
@@ -62,5 +62,7 @@ app.use((err,req,res,next)=>{
     }
 })
 
-
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 app.listen(port, () => console.log(`server started on port ${port}`))

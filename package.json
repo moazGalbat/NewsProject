@@ -9,7 +9,8 @@
     "debug": "nodemon --inspect",
     "client": "npm start --prefix client",
     "dev": "concurrently 'npm run server' 'npm run client'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
@@ -26,5 +27,8 @@
     "mongoose": "^5.9.19",
     "nodemon": "^2.0.4",
     "redis": "^3.0.2"
+  },
+  "engines": {
+    "node": "14.1.0"
   }
 }
