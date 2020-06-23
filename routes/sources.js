@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const {getAllSources} = require('../controllers/sourcesControllers')
-// const SourceModel = require('../models/source')
+const cacheMiddleware = require('../middlewares/authMiddleware')
 
 
-router.get("/", getAllSources )
+
+
+router.get("/",cacheMiddleware, getAllSources )
 
 
 module.exports = router;

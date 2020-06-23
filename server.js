@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const helmet = require("helmet");
 
+
 require('dotenv').config()
 
 const authRouter = require('./routes/auth')
@@ -27,6 +28,7 @@ mongoose.connect(uri, {
         process.exit(1);
     };
 })
+
 
 
 const corsOptions = {
