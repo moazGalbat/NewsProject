@@ -8,6 +8,11 @@ const client = redis.createClient(
     }
 );
 
+client.on('error', function(err){
+    console.error(err);
+});
+
+
 client.auth(process.env.REDIS_PASSWORD, function () {
     console.log('Redis client connected');
 });

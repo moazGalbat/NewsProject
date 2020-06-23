@@ -36,6 +36,7 @@ export default function MenuAppBar() {
 
 
     const logOut = () => {
+        setAnchorEl(null);
         removeAuthTokens();
         setCurrentUser(null);
         history.push('/login')
@@ -58,11 +59,16 @@ export default function MenuAppBar() {
                         <Link component={RouterLink} to="/" variant="inherit" underline="none" color="inherit" className={classes.link}>
                             MyNews
                         </Link>
+                        {currentUser?.email?
                         <Link component={RouterLink} to="/sources" variant="h6" underline="none" color="inherit">
                             Sources
-                        </Link>
+                        </Link>:
+                        null
+                        }
                     </Typography>
                     <div>
+                    {currentUser?.email?
+                        (<>
                         <IconButton
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
@@ -78,11 +84,6 @@ export default function MenuAppBar() {
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorEl}
-                            // anchorOrigin={{
-                            //     vertical: 'bottom',
-                            //     horizontal: 'center',
-                            // }}
-                            keepMounted
                             transformOrigin={{
                                 vertical: 'bottom',
                                 horizontal: 'center',
@@ -92,6 +93,10 @@ export default function MenuAppBar() {
                         >
                             <MenuItem onClick={logOut}>LogOut</MenuItem>
                         </Menu>
+                        </>
+                        )
+                        :null
+                    }
                     </div>
                 </Toolbar>
             </AppBar>

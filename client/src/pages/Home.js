@@ -85,7 +85,7 @@ export default function Home() {
               </Link>
             </Grid>:
             <Grid container justify = "center" className={classes.cardGrid}>
-                <div style={{color: `red`}}>ٍome error occurred, while fetching api</div>
+                <div style={{color: `red`}}>Some error occurred, while fetching api. Please try again in moment.</div>
             </Grid>
         )}
         {/* End Errors */}

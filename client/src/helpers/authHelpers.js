@@ -1,8 +1,15 @@
 import jwt from "jwt-decode"
 
 export const getUserFromToken = (token)=>{
-    const user = jwt(token)
-    return { email: user.email, id: user.id , fullName: user.fullName}
+    try {
+        if (token){
+            const user = jwt(token)
+            return { email: user.email, id: user.id , fullName: user.fullName}
+        }
+        return null;
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 export const getAuthTokens = ()=>{
