@@ -35,7 +35,6 @@ const corsOptions = {
     origin: process.env.CLIENT_URI,
 }
     
-app.use(express.static(path.join(__dirname, "client", "build")))
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json())
@@ -62,7 +61,13 @@ app.use((err,req,res,next)=>{
     }
 })
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-});
+// for production only.
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname, "client", "build")))
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    });
+}
+// 
+
 app.listen(port, () => console.log(`server started on port ${port}`))

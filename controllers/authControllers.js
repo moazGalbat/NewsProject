@@ -9,7 +9,7 @@ const login = async (req, res, next) => {
         if (!user) throw customError(401, "Incorrect Username or Password")
         const match = await user.comparePassword(password);
         if (!match) throw customError(401, "Incorrect Username or Password")
-        const token = await user.generateToken("30m");
+        const token = await user.generateToken("3h");
         res.status(200).json({ token })
     } catch (err) {
         next(err)
